@@ -224,7 +224,6 @@ A estrutura do projeto é a seguinte:
 
 ```bash
 .
-.
 ├── access-control
 ├── dags
 ├── images
