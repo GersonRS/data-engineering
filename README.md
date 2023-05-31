@@ -81,11 +81,16 @@ Este template usa o **[helm](https://helm.sh/)** para ajudar a instalar algumas 
 
 Execute o seguinte comando para iniciar o Minikube:
 
-```
+```sh
 minikube start
 ```
 
-Para acessar alguns serviços via loadbalancer no Minikube, é necessário utilizar o [tunelamento do minikube](https://minikube.sigs.k8s.io/docs/handbook/accessing/#example-of-loadbalancer). Para isso, abra uma nova aba no seu terminal e execute o seguinte comando:
+Para acessar alguns serviços via ingress no Minikube, é necessário abilitar o [ingress do minikube](https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/). Para isso, no seu terminal, execute o seguinte comando:
+```sh
+minikube addons enable ingress
+```
+
+Já para acessar alguns serviços via loadbalancer no Minikube, é necessário utilizar o [tunelamento do minikube](https://minikube.sigs.k8s.io/docs/handbook/accessing/#example-of-loadbalancer). Para isso, abra uma nova aba no seu terminal e execute o seguinte comando:
 ```sh
 minikube tunnel
 ```

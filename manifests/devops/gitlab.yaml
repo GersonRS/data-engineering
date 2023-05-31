@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitlab
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  namespace: cicd
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: cicd
+  project: default
+  source:
+    repoURL: 'https://charts.gitlab.io/'
+    targetRevision: 6.11.5
+    helm:
+      values: |-
+        global:
+          ingress:
+            configureCertmanager: false
+            class: "nginx"
+          hosts:
+            domain: $(minikube ip).nip.io
+            externalIP: $(minikube ip)
+          rails:
+            bootsnap:
+              enabled: false
+          shell:
+            port: 32022
+        certmanager:
+          install: false
+        nginx-ingress:
+          enabled: false
+        prometheus:
+          install: false
+        gitlab-runner:
+          install: false
+        gitlab:
+          webservice:
+            minReplicas: 1
+            maxReplicas: 1
+          sidekiq:
+            minReplicas: 1
+            maxReplicas: 1
+          gitlab-shell:
+            minReplicas: 1
+            maxReplicas: 1
+            service:
+              type: NodePort
+              nodePort: 32022
+        registry:
+          hpa:
+            minReplicas: 1
+            maxReplicas: 1
+      parameters:
+      - name: timeout
+        value: 600s
+    chart: gitlab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
